@@ -17,6 +17,7 @@ namespace TicTacToeMinimax
         // For counting calls to Minimax
         private int functionCalls = 0;
 
+        public enum GameStatus { HumanWon, AiWon, Tie, MovesAvailable };
 
         public TicTacToeGame()
         {
@@ -31,10 +32,10 @@ namespace TicTacToeMinimax
                                            '6', 'O', 'O' };  */
 
             char turn = HumanPlayer;
-            int gameStatus = GameStatus(board);
+            GameStatus gameStatus = GetGameStatus(board);
 
             // Keep looping while moves are available
-            while (gameStatus == 3)
+            while (gameStatus == GameStatus.MovesAvailable)
             {
                 // Alternate turns
                 if (turn == HumanPlayer)
@@ -51,12 +52,12 @@ namespace TicTacToeMinimax
                 board[bestMove.Position] = turn;
                 DisplayBoard(board);
 
-                gameStatus = GameStatus(board);
+                gameStatus = GetGameStatus(board);
             }
 
-            if (gameStatus == 0)
+            if (gameStatus == GameStatus.HumanWon)
                 Console.WriteLine("Human won!");
-            else if (gameStatus == 1)
+            else if (gameStatus == GameStatus.AiWon)
                 Console.WriteLine("AI won!");
             else
                 Console.WriteLine("Tie game.");
@@ -112,18 +113,18 @@ namespace TicTacToeMinimax
             }
         }
 
-        // Return 0 if human wins, 1 if AI wins, 2 if tie, 3 if moves still available
-        private int GameStatus(char[] board)
+        // Returns status of the board
+        private GameStatus GetGameStatus(char[] board)
         {
             if (IsWinner(board, HumanPlayer))
-                return 0;
+                return GameStatus.HumanWon;
             if (IsWinner(board, AiPlayer))
-                return 1;
+                return GameStatus.AiWon;
             if (AvailablePositions(board).Count == 0)
-                return 2;   // Tie
+                return GameStatus.Tie;
 
             // Still moves available
-            return 3;
+            return GameStatus.MovesAvailable;
         }
 
         // Recursively find the best move for the given player
@@ -134,19 +135,19 @@ namespace TicTacToeMinimax
             
             var availablePositions = AvailablePositions(board);
 
-            if (IsWinner(board, HumanPlayer))
+            if (GetGameStatus(board) == GameStatus.HumanWon)
             {
                 // AI doesn't want human to win
                 return new Move { Score = -10 };
             }
-            else if (IsWinner(board, AiPlayer))
+            else if (GetGameStatus(board) == GameStatus.AiWon)
             {
                 // Good move for AI
                 return new Move { Score = 10 };
             }
-            else if (availablePositions.Count == 0)
+            else if (GetGameStatus(board) == GameStatus.Tie)
             {
-                // Tie
+                // Tie isn't good or bad
                 return new Move { Score = 0 };
             }
 
@@ -163,13 +164,9 @@ namespace TicTacToeMinimax
 
                 // Get the score resulting from the player's opponent moving
                 if (player == AiPlayer)
-                {
                     move.Score = Minimax(board, HumanPlayer).Score;
-                }
                 else
-                {
                     move.Score = Minimax(board, AiPlayer).Score;
-                }
 
                 // Reset the spot to empty
                 board[pos] = label;
