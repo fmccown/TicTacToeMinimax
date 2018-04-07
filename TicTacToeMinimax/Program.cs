@@ -14,10 +14,10 @@ namespace TicTacToeMinimax
         private const char HumanPlayer = 'O';
         private const char AiPlayer = 'X';
 
+        public enum GameStatus { HumanWon, AiWon, Tie, MovesAvailable };
+
         // For counting calls to Minimax
         private int functionCalls = 0;
-
-        public enum GameStatus { HumanWon, AiWon, Tie, MovesAvailable };
 
         public TicTacToeGame()
         {
