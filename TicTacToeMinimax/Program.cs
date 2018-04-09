@@ -72,7 +72,7 @@ namespace TicTacToeMinimax
             Console.WriteLine();
         }
 
-        // Return true if the player has won the game
+        // Returns true if the player has won the game
         private bool IsWinner(char[] board, char player)
         {
             return (board[0] == player && board[1] == player && board[2] == player) ||
@@ -85,7 +85,7 @@ namespace TicTacToeMinimax
                    (board[2] == player && board[4] == player && board[6] == player);
         }
 
-        // Return a list of available board positions
+        // Returns a list of available board positions
         private List<int> AvailablePositions(char[] newBoard)
         {
             var available = new List<int>();
@@ -98,7 +98,7 @@ namespace TicTacToeMinimax
             return available;
         }
 
-        // Return move with best score, depending on who the player is
+        // Returns move with best score, depending on who the player is
         private Move BestMove(List<Move> moves, char player)
         {           
             if (player == AiPlayer)
@@ -133,8 +133,6 @@ namespace TicTacToeMinimax
             functionCalls++;
             //DisplayBoard(newBoard);
             
-            var availablePositions = AvailablePositions(board);
-
             if (GetGameStatus(board) == GameStatus.HumanWon)
             {
                 // AI doesn't want human to win
@@ -153,8 +151,8 @@ namespace TicTacToeMinimax
 
             // Keep track of all possible moves for available positions
             var moves = new List<Move>();
-
-            foreach (var pos in availablePositions)
+            
+            foreach (var pos in AvailablePositions(board))
             {
                 Move move = new Move { Position = pos };
                 char label = board[pos];
