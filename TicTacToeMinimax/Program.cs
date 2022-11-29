@@ -65,7 +65,7 @@ namespace TicTacToeMinimax
 
         private void DisplayBoard(char[] board)
         {
-            Console.WriteLine(functionCalls);
+            //Console.WriteLine(functionCalls);
             Console.WriteLine(board[0].ToString() + board[1] + board[2]);
             Console.WriteLine(board[3].ToString() + board[4] + board[5]);
             Console.WriteLine(board[6].ToString() + board[7] + board[8]);
@@ -91,7 +91,7 @@ namespace TicTacToeMinimax
             var available = new List<int>();
             for (int i = 0; i < newBoard.Length; i++)
             {
-                if (newBoard[i] != 'O' && newBoard[i] != 'X')
+                if (newBoard[i] != HumanPlayer && newBoard[i] != AiPlayer)
                     available.Add(i);
             }
 
