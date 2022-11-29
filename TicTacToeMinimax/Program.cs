@@ -175,7 +175,7 @@ namespace TicTacToeMinimax
             return BestMove(moves, player);
         }       
 
-        static void Main(string[] args)
+        static void Main()
         {
             new TicTacToeGame();
         }
@@ -189,8 +189,7 @@ namespace TicTacToeMinimax
             // Allow two moves to be compared
             public int CompareTo(object obj)
             {
-                Move otherMove = obj as Move;
-                if (otherMove != null)
+                if (obj is Move otherMove)
                     return Score.CompareTo(otherMove.Score);
                 else
                     return 0;
